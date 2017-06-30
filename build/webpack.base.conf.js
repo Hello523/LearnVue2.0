@@ -1,6 +1,6 @@
 var path = require('path')
 var utils = require('./utils')
-var config = require('../config')
+var config = require('../config') // 获取配置
 var vueLoaderConfig = require('./vue-loader.conf')
 
 function resolve (dir) {
@@ -8,21 +8,21 @@ function resolve (dir) {
 }
 
 module.exports = {
-  entry: {
+  entry: { // 配置webpack编译入口
     app: './src/main.js'
   },
-  output: {
-    path: config.build.assetsRoot,
-    filename: '[name].js',
+  output: { // 配置webpack输出路径和命名规则
+    path: config.build.assetsRoot, // webpack输出的目标文件夹路径（例如：/dist)
+    filename: '[name].js', // webpack输出bundle文件命名格式，基于文件的md5生成Hash名称的script来防止缓存
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+      : config.dev.assetsPublicPath // webpack编译输出的发布路径(判断是正式环境或者开发环境等)
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
-    alias: {
+    extensions: ['.js', '.vue', '.json'], //自动解析确定的拓展名,使导入模块时不带拓展名
+    alias: {  // 创建import或require的别名，一些常用的，路径长的都可以用别名
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
+      '@': resolve('src'),//@为根目录
       'v-ui': path.join(process.cwd(), '/src/components')
     }
   },

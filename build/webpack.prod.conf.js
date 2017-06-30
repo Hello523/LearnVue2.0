@@ -2,26 +2,30 @@ var path = require('path')
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
-var merge = require('webpack-merge')
+var merge = require('webpack-merge') //一个可以合并数组和对象的插件
 var baseWebpackConfig = require('./webpack.base.conf')
+// 用于从webpack生成的bundle中提取文本到特定文件中的插件
+// 可以抽取出css，js文件将其与webpack输出的bundle分离
 var CopyWebpackPlugin = require('copy-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin') //一个用于生成HTML文件并自动注入依赖文件（link/script）的webpack插件
+var ExtractTextPlugin = require('extract-text-webpack-plugin')//如果我们想用webpack打包成一个文件，css js分离开，需要这个插件
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 var env = config.build.env
 
+// 合并基础的webpack配置
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
+    // 配置样式文件的处理规则，使用styleLoaders
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
       extract: true
     })
   },
-  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  devtool: config.build.productionSourceMap ? '#source-map' : false, //// 开启source-map，生产环境下推荐使用cheap-source-map或source-map，后者得到的.map文件体积比较大，但是能够完全还原以前的js代码
   output: {
-    path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
+    path: config.build.assetsRoot,// 编译输出目录
+    filename: utils.assetsPath('js/[name].[chunkhash].js'),// 编译输出文件名格式
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [

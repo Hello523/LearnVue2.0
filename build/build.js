@@ -1,7 +1,7 @@
-require('./check-versions')()
-
+require('./check-versions')()// 检查 Node 和 npm 版本
+var shell = require('shelljs'); // 使用了 shelljs 插件，可以让我们在 node 环境的 js 中使用 shell
 process.env.NODE_ENV = 'production'
-
+require('shelljs/global')  // 使用了 shelljs 插件，可以让我们在 node 环境的 js 中使用 shell
 var ora = require('ora')
 var rm = require('rimraf')
 var path = require('path')
