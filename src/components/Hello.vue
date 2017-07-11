@@ -6,34 +6,51 @@
       <div class="" id="p-content">
         <ul>
           <h1>My Todos {{TodoCount}}</h1>
-          <li v-for="(todo,index) in todos" :class="{'completed':todo.isCompleted}">
-            <router-link :to="{name:'todo',params:{id:todo.id}}">{{todo.title}}</router-link>
-            <Button type="warning" size="small" class="btn-del" @click="DeleteTodo(index)">Delete</Button>
-            <Button size="small" class="btn-del" :type="[todo.isCompleted?'error':'success']" @click="CompleteTodo(todo)">{{todo.isCompleted?'Cancel':'Complete'}}</Button>
-          </li>
+
         </ul>
-        <form>
-          <Input type="text" v-model="newTodo.title" placeholder="请输入..."></Input>
-          <Button type="success" class="btn" @click="AddTodo(newTodo)">Add Todo</Button>
-        </form>
+           <input  @input="inputChange" />
+
+           <input placeholder="请输入条形码" class="disPriceStyle"  v-model = 'searcBarCode'></input>
+
+           <el-input v-model="showNum" placeholder="请输入内容"></el-input>
+
       </div>
     </div>
+
+
   </div>
   </transition>
 </template>
 <script>
+import Vue from "vue"
+
 export default {
   name: 'hello',
   props:['todos'],
   data () {
     return {
+      oldNum:0,
+       input:0,
+       searcBarCode:'',
+       showNum:'',
       newTodo:{id:null,title:'',isCompleted:false},
+
     }
   },
+ watch:{
+      searcBarCode:function(){
+          this.searcBarCode=this.searcBarCode.replace(/[^0-9]/ig,"");
+      },
+      showNum:function(){
+        this.showNum=this.showNum.replace(/[^0-9]/ig,"");
+      }
+
+  },
+
   computed:{
     TodoCount(){
       return this.todos.length;
-    }
+    },
   },
   methods: {
     AddTodo(newTodo){
@@ -45,6 +62,11 @@ export default {
     },
     CompleteTodo(todo){
       todo.isCompleted=!todo.isCompleted;
+    },
+    inputChange(event){
+      var text = event.target.value;
+      var value = text.replace(/[^0-9]/ig,"");
+      event.target.value = value;
     }
   }
 }
